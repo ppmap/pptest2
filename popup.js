@@ -76,7 +76,7 @@ map.on('click', function(e) {
       
       }
       featureProperties = featureProperties +  "</table>";
-      htmlString = htmlString + "<span style='font-weight:bold;' >" + "単写真" +  "</span>" + featureProperties;
+      htmlString = htmlString + featureProperties;
       //htmlString = htmlString + "<span style='font-weight:bold;' >" + feature.layer.id + ":" + feature.sourceLayer + "</span>" + featureProperties;
       
   }else if(feature.sourceLayer && feature.sourceLayer == "cluster"){
@@ -103,7 +103,7 @@ map.on('click', function(e) {
                         + "<div>※個別の写真を見るには、<a href='#' onClick='map.flyTo(" 
                         + "{center: [" + e.lngLat.lng + "," +  e.lngLat.lat + "], zoom: " + 11 + "}"
                         + ");'>地図を拡大</a>してください。</div>";
-      htmlString = htmlString + "<span style='font-weight:bold;' >" + "単写真（集計）" +  "</span>" + featureProperties;
+      htmlString = htmlString + featureProperties;
       //htmlString = htmlString + "<span style='font-weight:bold;' >" + feature.layer.id + ":" + feature.sourceLayer + "</span>" + featureProperties;
   
   }else if(feature.sourceLayer && feature.sourceLayer == "zu"){
