@@ -14,8 +14,14 @@ body { margin:0; padding:0; }
   bottom: 0;
   width: 100%;
 }
+
+#menutop{
+  position: absolute;
+  width: 100%;
+}
+
 #menu {
-    position: absolute;
+    position: relative;
     padding: 2.5%;
     margin: 0 0;
     background: #eeeeee;
@@ -47,12 +53,25 @@ button.local {
   width: 80%;
 }
 
+#note {
+  position: relative;
+  color: #FF0000;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: bold;
+  right: 0.5em;
+  text-align: right;
+  text-shadow: #FFFFFF 0.2em 0.2em 0.2em, #FFFFFF -0.2em 0.2em 0.2em, #FFFFFF 0.2em -0.2em 0.2em, #FFFFFF -0.2em -0.2em 0.2em;
+}
+
+
+
 </style>
 </head>
 <body>
 
 
 <div id='map'></div>
+<div id='menutop'>
 <div id='menu'>
   <form name="selection">
     <input type="checkbox" id="selectPp" name="selectPp" checked="checked" onChange="refleshPp();">空中写真
@@ -159,10 +178,15 @@ button.local {
   <button type="button" class="local" onclick="showFilterSetting()" ><span id="showFilterSettingMode">▲詳細設定を閉じる</span></button>
 </div>
 
+<div id="note">
+  <span>テストVer</span>
+</div>
+
+</div>
+
 <script>
 
 const root = "https://ppmap.github.io/pptest2";
-
 
 
 /*************************************************/
