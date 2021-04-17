@@ -58,13 +58,16 @@ button.local {
 <div id='menu'>
   <form name="selection">
     <input type="checkbox" id="selectPp" name="selectPp" checked="checked" onChange="refleshPp();">空中写真
+    <input type="checkbox" id="selectPp2" name="selectPp2" onChange="refleshPp2();">テスト
+    <input type="checkbox" id="selectPp3" name="selectPp3" onChange="refleshPp3();">テスト２
+    <!--
     <input type="checkbox" id="selectChizu" name="selectChizu" onChange="refleshZu();">地形図・地勢図
+    -->
   </form>
   
   <div id='aco' name='aco'style="display:;">
-  <form name="question" id="question" style="display:none;">
+  <form name="question" id="question">
   <hr>
-  <div>■写真の絞り込み設定</div>
     <datalist id="tickmarks">
       <option value="1900" label="1900"></option>
       <option value="1910"></option>
@@ -85,17 +88,11 @@ button.local {
     <!--
     <span>撮影計画機関：</span>
     -->
-    <input type="hidden" id="kikan" name="kikan" value="" onChange="refleshPp();">
+    <input type="hidden" id="kikan" name="kikan" value="" onChange="refleshAll();">
     
-    <span>　色：</span>
-    <select name="pcolor" onChange="refleshPp();">
-      <option value="cm">カラーとモノクロ</option>
-      <option value="c">カラーだけ</option>
-      <option value="m">モノクロだけ</option>
-    </select>
     
-    <span>　縮尺：</span>
-    <select name="pscalestart" onChange="refleshPp();">
+    <span>縮尺：</span>
+    <select name="pscalestart" onChange="refleshAll();">
       <option value="0">--</option>
       <option value="5000">1/5000</option>
       <option value="10000">1/10000</option>
@@ -109,7 +106,7 @@ button.local {
       <option value="5000000">1/5000000</option>
     </select>
     <span>～</span>
-    <select name="pscaleend" onChange="refleshPp();">
+    <select name="pscaleend" onChange="refleshAll();">
       <option value="5000">1/5000</option>
       <option value="10000">1/10000</option>
       <option value="20000">1/20000</option>
@@ -121,6 +118,15 @@ button.local {
       <option value="1000000">1/1000000</option>
       <option value="5000000">1/5000000</option>
       <option value="99999999" selected="selected">--</option>
+    </select>
+    
+    <br>
+    
+    <span>色：</span>
+    <select name="pcolor" onChange="refleshAll();">
+      <option value="cm">カラーとモノクロ</option>
+      <option value="c">カラーだけ</option>
+      <option value="m">モノクロだけ</option>
     </select>
     
     <!--
@@ -135,11 +141,12 @@ button.local {
     <br>
     
     
-    <input type="range" id="lower" name="lower" min="1920" max="2021" list="tickmarks" value="2021" onChange="refleshPp();"><span id="lwYearNum"></span><br>
-    <input type="range" id="upper" name="upper" min="1920" max="2021" list="tickmarks" value="1930" onChange="refleshPp();"><span id="upYearNum"></span><br>
+    <input type="range" id="lower" name="lower" min="1920" max="2021" list="tickmarks" value="2021" onChange="refleshAll();"><span id="lwYearNum"></span><br>
+    <input type="range" id="upper" name="upper" min="1920" max="2021" list="tickmarks" value="1930" onChange="refleshAll();"><span id="upYearNum"></span><br>
     
   </form>
   
+  <!--
   <form name="zuFilter" id="zuFilter" style="display:none;">
   <hr>
   <div>■地形図・地勢図の絞り込み設定</div>
@@ -148,6 +155,7 @@ button.local {
     <input type="checkbox" id="zu25000" name="zu25000" checked="checked" onChange="refleshZu();">2万5千分の1
     <input type="checkbox" id="zu10000" name="zu10000" checked="checked" onChange="refleshZu();">1万分の1
   </form>
+  -->
   
   </div>
   <button type="button" class="local" onclick="showFilterSetting()" ><span id="showFilterSettingMode">▲詳細設定を閉じる</span></button>
@@ -155,7 +163,10 @@ button.local {
 
 <script>
 
-const root = "https://ppmap.github.io/pptest2";
+//const root = "https://ppmap.github.io/pptest2";
+const root = "http://localhost/210417_pp/docs";
+//const root = "https://mghs15.github.io/pp2pbf";
+//const root = "https://mghs15.github.io/pppbfdata";
 
 
 /*************************************************/
@@ -205,7 +216,6 @@ const showFilterSetting = () => {
 </script>
 
 <script src='./pp.js'></script>
-<script src='./chizu.js'></script>
 <script src='./popup.js'></script>
 
 

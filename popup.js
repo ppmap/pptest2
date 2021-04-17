@@ -35,16 +35,6 @@ map.on('click', function(e) {
   //初期化 -----------------------------------------
   popup.remove();
   
-  const targetPointFeatureId = "targetPointFeature";
-  if(map.getLayer(targetPointFeatureId )){
-    
-    map.removeLayer(targetPointFeatureId );
-    
-    if(map.getSource(targetPointFeatureId )){
-       map.removeSource(targetPointFeatureId );
-    }
-  
-  }
   
   //レンダリングされた地物を取得 -----------------------------------------
   var features = map.queryRenderedFeatures(e.point);
@@ -67,8 +57,13 @@ map.on('click', function(e) {
           if(name == "ID"){
               featureProperties = featureProperties + "<tr><td style='vertical-align:top; color:#555555;'>" + name + "</td>";
               featureProperties = featureProperties + "<td style='color:#000000;'>"
-                                + "<a target='_blank' href='https://mapps.gsi.go.jp/map-lib-api/apiContentsView.do?specificationId=" + feature.properties[name] + "'>"
+                                + "<a target='mapps' href='https://mapps.gsi.go.jp/map-lib-api/apiContentsView.do?specificationId=" + feature.properties[name] + "'>"
                                 + feature.properties[name] + "</a>" + "</td></tr>";
+              
+              
+              const url = 'https://mapps.gsi.go.jp/map-lib-api/apiContentsView.do?specificationId=' + feature.properties[name];
+              //window.open(url, "mapps");
+              
               /*
               featureProperties = featureProperties + "<td style='color:#000000;'>"
                                 + "<img src='https://mapps.gsi.go.jp/contentsImage.do?specificationId=" + feature.properties[name]  + "'>"
@@ -174,6 +169,16 @@ map.on('click', function(e) {
   
   //クリックした地物の強調 ---------------------------------------------
   
+  const targetPointFeatureId = "targetPointFeature";
+  if(map.getLayer(targetPointFeatureId )){
+    
+    map.removeLayer(targetPointFeatureId );
+    
+    if(map.getSource(targetPointFeatureId )){
+       map.removeSource(targetPointFeatureId );
+    }
+  
+  }
   
   map.addSource(targetPointFeatureId , {
     "type": "geojson",
@@ -191,10 +196,11 @@ map.on('click', function(e) {
           'visibility': 'visible'
         },
         'paint': {
-          'circle-radius': 10,
-          'circle-color': ['rgba', 255,255,0,1]
+          'circle-radius': 20,
+          'circle-color': ['rgba', 0,200,255,1],
+          'circle-blur': 0.4
         }
-  });
+  }, "overlap");
       
   
 });

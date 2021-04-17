@@ -15,6 +15,8 @@ const yearsList = [
 const startYear = 1900;
 const endYear = 2021;
 
+/*************************************************************************************/
+
 const showLayer = (tile, upYear, lwYear, filterArr) => {
   const upYears = Math.ceil(upYear/10)*10;
   const lwYears = Math.floor(lwYear/10)*10;
@@ -33,12 +35,14 @@ const showLayer = (tile, upYear, lwYear, filterArr) => {
     const ys = 0;
     
     //大縮尺用
-    const sourceid = ys + 's';
-    const layerid = ys + 's';
+    const sourceid = tile + '-' + ys + 's';
+    const layerid = tile + '-' + ys + 's';
     
     //小縮尺用（クラスタリング）
-    const sourceidszl = ys + 's-szl';
-    const layeridszl = ys + 's-szl';
+    const sourceidszl = sourceid + '-szl';
+    const layeridszl = layerid + '-szl';
+    
+    
     
     //既存のソース・レイヤを削除
     //既存のソースをそのまま利用できるように、年代に応じてソース削除の有無あり
@@ -64,8 +68,8 @@ const showLayer = (tile, upYear, lwYear, filterArr) => {
           map.removeSource(sourceidszl);
         }
       }
+      
     }else{
-    
     
       if(map.getLayer(layerid + 'debug')){
         map.removeLayer(layerid + 'debug');
@@ -85,13 +89,21 @@ const showLayer = (tile, upYear, lwYear, filterArr) => {
     
     
     //チェックボックスの確認
-    if(!document.selection.selectPp.checked){ 
-      document.question.style.display = "none";
-      return;
-      
+    //アイコンの色
+    let circleColorRgb = [255,255,255];
+    if(tile == "photo"){
+      if(!document.selection.selectPp.checked) return;
+      circleColorRgb = [255,0,0];
+    }else if(tile == "photo2"){
+      if(!document.selection.selectPp2.checked) return;
+      circleColorRgb = [0,255,0];
+    }else if(tile == "photo3"){
+      if(!document.selection.selectPp3.checked) return;
+      circleColorRgb = [0,0,255];
     }else{
-      document.question.style.display = "";
+      circleColorRgb = [100,100,100];
     }
+    
     
     
     //if(+ys >= lwYears && upYears > +ys){
@@ -121,7 +133,7 @@ const showLayer = (tile, upYear, lwYear, filterArr) => {
         },
         'paint': {
           'circle-radius': 10,
-          'circle-color': ['rgba', 255,255,255,1]
+          'circle-color': ['rgba', circleColorRgb[0], circleColorRgb[1], circleColorRgb[2], 1]
         },
         'source-layer': 'single'
       });
@@ -139,11 +151,7 @@ const showLayer = (tile, upYear, lwYear, filterArr) => {
         },
         'paint': {
           'circle-radius': 5,
-          'circle-color': ['rgba', 
-            255, 
-            0, //["*", 2, ["to-number", ["slice", ["get", "date"], 2, 4]]],
-            0, //["-", 255, ["*", 2, ["to-number", ["slice", ["get", "date"], 2, 4]]]],
-            1]
+          'circle-color': ['rgba', circleColorRgb[0], circleColorRgb[1], circleColorRgb[2], 1]
         },
         'source-layer': 'single'
       });
@@ -181,11 +189,7 @@ const showLayer = (tile, upYear, lwYear, filterArr) => {
       },
       'paint': {
         'circle-radius': 16,
-        'circle-color': ['rgba', 
-          255, 
-          0, //["*", 2, ["to-number", ["slice", ["get", "date"], 2, 4]]],
-          0, //["-", 255, ["*", 2, ["to-number", ["slice", ["get", "date"], 2, 4]]]],
-          0.3]
+        'circle-color': ['rgba', circleColorRgb[0], circleColorRgb[1], circleColorRgb[2], 0.3]
       },
       'source-layer': 'cluster'
     });
@@ -279,11 +283,42 @@ const refleshLayer = (tile) =>{
 }
 
 
+
+//HTMLのボタンクリック時
+// - 共通部分の操作時
+refleshAll =() => {
+  refleshLayer('photo');
+  refleshLayer('photo2');
+  refleshLayer('photo3');
+}
+
+// - 各レイヤのボタン操作時
 const refleshPp = () =>{
   refleshLayer('photo');
 }
+const refleshPp2 = () =>{
+  refleshLayer('photo2');
+}
+const refleshPp3 = () =>{
+  refleshLayer('photo3');
+}
 
+
+
+//Map読み込み時
 map.on('load', function(){
-  refleshPp();
+  map.addLayer({
+			"id": "overlap",
+			"type": "background",
+			"layout": {
+				"visibility": "visible"
+			},
+			"paint": {
+				"background-color": "rgba(255,255,255,0)",
+				"background-opacity": 0
+			}
+  });
+  
+  refleshAll();
 });
 
